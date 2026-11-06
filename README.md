@@ -1,4 +1,4 @@
-# Marulhos — Contador de Reservas/Unidades
+# Extensão GreenSoftware Marulhos — Contador de Reservas/Unidades
 
 Desenvolvido por Caio Vinícius.
 
