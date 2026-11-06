@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Marulhos</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <img src="logo.svg" alt="" width="24" height="24" />
+      <h1>Contador de unidades</h1>
+    </header>
+
+    <button id="scan">Verificar</button>
+
+    <details id="occupancy" hidden>
+      <summary>Ocupação condomínio</summary>
+      <p id="occupancyResult" role="status">Clique em Verificar para calcular.</p>
+    </details>
+
+    <p id="status" role="status"></p>
+
+    <section id="controls" hidden>
+      <label>
+        Seção
+        <select id="section"></select>
+      </label>
+
+      <div class="fields">
+        <label>
+          Grupo
+          <select id="group">
+            <option value="all">Todos</option>
+            <option value="hotel">Hotel</option>
+            <option value="condominio">Condomínio</option>
+          </select>
+        </label>
+        <label>
+          Inserida por
+          <select id="admin">
+            <option value="">Todas</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="cards"></div>
+      <p id="info"></p>
+
+      <div class="list">
+        <table>
+          <thead>
+            <tr>
+              <th>Reserva</th>
+              <th>UH</th>
+              <th>Grupo</th>
+              <th>Inserida por</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="config" hidden>
+      <h2>Configuração</h2>
+      <label class="check">
+        <input type="checkbox" id="useAdmin" checked />
+        Incluir administradoras como hotel
+      </label>
+      <label>
+        Administradoras (uma por linha)
+        <textarea id="admins" rows="2">MAI ADMINISTRADORA</textarea>
+      </label>
+    </section>
+
+    <footer>
+      <button
+        id="gear"
+        class="gear"
+        type="button"
+        title="Configuração"
+        aria-label="Configuração"
+        aria-controls="config"
+        aria-expanded="false"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+          />
+        </svg>
+      </button>
+      <span class="mark">Desenvolvido por Caio Vinícius</span>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
