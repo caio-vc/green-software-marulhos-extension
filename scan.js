@@ -1,5 +1,8 @@
 (() => {
-  if (location.hostname !== 'greensoftware.com.br' || !location.pathname.startsWith('/marulhos/')) {
+  if (
+    !['greensoftware.com.br', 'adm.gbdata.srv.br'].includes(location.hostname) ||
+    !location.pathname.startsWith('/marulhos/')
+  ) {
     return [];
   }
 

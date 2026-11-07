@@ -133,7 +133,10 @@ async function scan() {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const url = new URL(tab?.url || 'about:blank');
-    if (url.hostname !== 'greensoftware.com.br' || !url.pathname.startsWith('/marulhos/')) {
+    if (
+    !['greensoftware.com.br', 'adm.gbdata.srv.br'].includes(url.hostname) ||
+    !url.pathname.startsWith('/marulhos/')
+  ) {
       throw new Error('Acesse o Green Software do Marulhos para utilizar.');
     }
     const frames = await chrome.scripting.executeScript({
