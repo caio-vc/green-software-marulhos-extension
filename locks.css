@@ -1,0 +1,21 @@
+.marulhos-lock-badge {
+  display: table;
+  margin: 5px 0 0;
+  padding: 2px 7px;
+  border: 1px solid currentColor;
+  border-radius: 10px;
+  background: #fff;
+  font: 500 10px/1.3 Arial, sans-serif;
+}
+
+.marulhos-lock-badge[data-type='approximation'] {
+  color: #175ca4;
+}
+
+.marulhos-lock-badge[data-type='insertion'] {
+  color: #a34408;
+}
+
+#chaves blockquote:has(.marulhos-lock-badge) {
+  align-items: flex-start !important;
+}

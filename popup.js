@@ -1,4 +1,5 @@
 const get = (id) => document.getElementById(id);
+const HOTEL_UNITS = ['RESTAURANTE', 'ADMINISTRACAO', 'TESTE', 'CONDOMINIO', 'HOTEL'];
 let sections = [];
 
 function normalize(text) {
@@ -14,11 +15,12 @@ function classify(rows) {
   const admins = get('admins').value.split('\n').map(normalize).filter(Boolean);
   return rows.map((row) => {
     const hotel =
+      HOTEL_UNITS.includes(normalize(row.unit)) ||
       /\bHOTEL\b/.test(normalize(row.reservation)) ||
       (get('useAdmin').checked && admins.includes(normalize(row.admin)));
     return {
       ...row,
-      group: hotel && normalize(row.unit) !== 'CONDOMINIO' ? 'hotel' : 'condominio'
+      group: hotel ? 'hotel' : 'condominio'
     };
   });
 }
@@ -43,19 +45,30 @@ function option(value, text) {
 function renderOccupancy() {
   const confirmed = sections.filter((section) => section.id === 'registros_reserva_confirmada');
   const inHouse = sections.filter((section) => section.id === 'registros_casa');
+  const groups = [
+    { group: 'condominio', total: 231, resultId: 'occupancyResult' },
+    { group: 'hotel', total: 69, resultId: 'hotelOccupancyResult' }
+  ];
+
   if (confirmed.length !== 1 || inHouse.length !== 1) {
-    get('occupancyResult').textContent = 'Carregue as reservas confirmadas e os hóspedes na casa.';
+    for (const { resultId } of groups) {
+      get(resultId).textContent = 'Carregue as reservas confirmadas e os hóspedes na casa.';
+    }
     return;
   }
-  const condominium = (section) =>
-    classify(section.rows).filter((row) => row.group === 'condominio');
-  const arriving = countUnits(condominium(confirmed[0]));
-  const staying = countUnits(condominium(inHouse[0]));
-  const percentage = (((arriving + staying) * 100) / 225).toLocaleString('pt-BR', {
-    maximumFractionDigits: 2
-  });
-  get('occupancyResult').textContent =
-    `${percentage}% (${arriving} confirmadas + ${staying} na casa)`;
+
+  const confirmedRows = classify(confirmed[0].rows);
+  const inHouseRows = classify(inHouse[0].rows);
+
+  for (const { group, total, resultId } of groups) {
+    const arriving = countUnits(confirmedRows.filter((row) => row.group === group));
+    const staying = countUnits(inHouseRows.filter((row) => row.group === group));
+    const percentage = (((arriving + staying) * 100) / total).toLocaleString('pt-BR', {
+      maximumFractionDigits: 2
+    });
+    get(resultId).textContent =
+      `${percentage}% (${arriving} confirmadas + ${staying} na casa)`;
+  }
 }
 
 function render() {
@@ -134,9 +147,9 @@ async function scan() {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const url = new URL(tab?.url || 'about:blank');
     if (
-    !['greensoftware.com.br', 'adm.gbdata.srv.br'].includes(url.hostname) ||
-    !url.pathname.startsWith('/marulhos/')
-  ) {
+      !['greensoftware.com.br', 'adm.gbdata.srv.br'].includes(url.hostname) ||
+      !url.pathname.startsWith('/marulhos/')
+    ) {
       throw new Error('Acesse o Green Software do Marulhos para utilizar.');
     }
     const frames = await chrome.scripting.executeScript({

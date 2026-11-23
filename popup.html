@@ -14,10 +14,16 @@
 
     <button id="scan">Verificar</button>
 
-    <details id="occupancy" hidden>
-      <summary>Ocupação condomínio</summary>
-      <p id="occupancyResult" role="status">Clique em Verificar para calcular.</p>
-    </details>
+    <section id="occupancy" hidden>
+      <details class="occupancy condominio">
+        <summary>Ocupação condomínio</summary>
+        <p id="occupancyResult" role="status">Clique em Verificar para calcular.</p>
+      </details>
+      <details class="occupancy hotel">
+        <summary>Ocupação hotel</summary>
+        <p id="hotelOccupancyResult" role="status">Clique em Verificar para calcular.</p>
+      </details>
+    </section>
 
     <p id="status" role="status"></p>
 
@@ -72,6 +78,40 @@
         Administradoras (uma por linha)
         <textarea id="admins" rows="2">MAI ADMINISTRADORA</textarea>
       </label>
+
+      <h2>Fechaduras</h2>
+      <form id="lockForm">
+        <fieldset id="lockFields" disabled>
+          <label class="check">
+            <input type="checkbox" id="showLocks" role="switch" />
+            Mostrar fechadura
+          </label>
+          <details id="lockManagement" class="lock-help">
+            <summary>Gerenciar unidades</summary>
+            <label>
+              Unidade
+              <input
+                id="lockUnit"
+                type="text"
+                placeholder="306A ou BGL01"
+                pattern="(?:[0-9]{3}[A-Za-z]|[A-Za-z]{3}[0-9]+)"
+                maxlength="20"
+                autocomplete="off"
+                required
+              />
+            </label>
+            <div class="lock-actions">
+              <button id="removeLock" type="button">Remover</button>
+              <button id="saveLock" type="submit">Adicionar</button>
+            </div>
+            <details class="lock-help">
+              <summary>Unidades com Aproximar</summary>
+              <div id="approximationUnits"></div>
+            </details>
+          </details>
+        </fieldset>
+      </form>
+      <p id="lockStatus" role="status"></p>
     </section>
 
     <footer>
@@ -104,5 +144,7 @@
     </footer>
 
     <script src="popup.js"></script>
+    <script src="lock-data.js"></script>
+    <script src="lock-settings.js"></script>
   </body>
 </html>

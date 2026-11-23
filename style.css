@@ -111,6 +111,7 @@ input {
 }
 
 select,
+input[type='text'],
 textarea {
   display: block;
   width: 100%;
@@ -126,6 +127,7 @@ textarea {
 }
 
 select:focus,
+input[type='text']:focus,
 textarea:focus {
   border-bottom-color: var(--blue);
 }
@@ -316,19 +318,73 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-#occupancy {
+.occupancy {
   margin-top: 10px;
   padding: 9px 12px;
   background: #fff;
   border-left: 3px solid var(--yellow);
 }
 
-#occupancy summary {
+.occupancy.hotel {
+  border-left-color: var(--indigo);
+}
+
+.occupancy summary {
   cursor: pointer;
   font-size: 12px;
 }
 
-#occupancyResult {
+.occupancy p {
   margin: 8px 0;
   font-size: 13px;
 }
+
+#lockFields {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+#lockUnit {
+  text-transform: uppercase;
+}
+
+.lock-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.lock-actions button {
+  flex: 1;
+  width: auto;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  text-transform: none;
+}
+
+.lock-actions button:hover {
+  background: var(--bg);
+  filter: none;
+}
+
+.lock-help,
+#lockStatus {
+  font-size: 11px;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.lock-help summary {
+  cursor: pointer;
+}
+
+.lock-help {
+  margin: 8px 0;
+}
+
+#lockStatus:empty {
+  display: none;
+}
+
