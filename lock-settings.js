@@ -17,23 +17,29 @@
     }
   }
 
-  async function saveUnit(included) {
-    const unit = LockData.normalizeUnit(get('lockUnit').value);
-    if (!LockData.isValidUnit(unit)) {
-      get('lockStatus').textContent = 'Informe a unidade no formato 306A ou BGL01.';
+  async function saveUnits(included) {
+    const units = [...new Set(
+      get('lockUnit').value.split(',').map(LockData.normalizeUnit).filter(Boolean)
+    )];
+    if (!units.length) {
+      get('lockStatus').textContent = 'Informe pelo menos uma unidade, como 306A ou BGL01.';
+      return;
+    }
+    const invalid = units.filter((unit) => !LockData.isValidUnit(unit));
+    if (invalid.length) {
+      get('lockStatus').textContent = `Confira: ${invalid.join(', ')}. Use o formato 306A ou BGL01.`;
       return;
     }
     get('lockFields').disabled = true;
     try {
       const current = await LockData.load();
-      const overrides = { ...current.overrides, [unit]: included };
+      const changes = Object.fromEntries(units.map((unit) => [unit, included]));
+      const overrides = { ...current.overrides, ...changes };
       await chrome.storage.local.set({ lockOverrides: overrides });
-      settings = { ...current, units: { ...current.units, [unit]: included }, overrides };
+      settings = { ...current, units: { ...current.units, ...changes }, overrides };
       get('lockUnit').value = '';
       showUnits();
-      get('lockStatus').textContent = included
-        ? `${unit} adicionada à lista de Aproximar.`
-        : `${unit} removida da lista.`;
+      get('lockStatus').textContent = `${included ? 'Adicionadas' : 'Removidas'}: ${units.join(', ')}.`;
     } catch {
       get('lockStatus').textContent = 'Não foi possível atualizar a lista. Tente novamente.';
     } finally {
@@ -54,9 +60,9 @@
     get('showLocks').addEventListener('change', saveVisibility);
     get('lockForm').addEventListener('submit', (event) => {
       event.preventDefault();
-      saveUnit(true);
+      saveUnits(true);
     });
-    get('removeLock').addEventListener('click', () => saveUnit(false));
+    get('removeLock').addEventListener('click', () => saveUnits(false));
     get('lockUnit').addEventListener('input', () => {
       get('lockStatus').textContent = '';
     });
